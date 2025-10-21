@@ -6,9 +6,7 @@ Presentation due date: 11th Nov 2025
 Report due date: 16th Nov 2025
 ***********************
 
-================
 Report Structure
-================
 // Not more than 8 pages in length (excluding references and appendix)
 // Proper referencing (APA7 / Harvard)
 
@@ -43,20 +41,14 @@ Report Structure
 - References
 	+ Use proper formats for referencing and provide appropriate in-text citation
 	
-============
 Deliverables
-============
-
 - Report
 	+ Only 1 member needs to submit
 	+ PDF / Word 
 	+ Link to Github / Google Colab in appendix
 	+ Include table of individual contribution
 	
-============
 Presentation
-============
-
 - Content
 	+ Try to keep within 10mins (Max 12mins)
 	
