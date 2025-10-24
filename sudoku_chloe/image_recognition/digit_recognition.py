@@ -22,7 +22,7 @@ def extract_digit(cell_img):
 
     if contours:
         largest_contour = max(contours, key=cv2.contourArea)
-        if cv2.contourArea(largest_contour) > 30:  # 너무 작으면 무시
+        if cv2.contourArea(largest_contour) > 30:  
             cv2.drawContours(mask, [largest_contour], -1, 255, -1)
 
     digit_only = cv2.bitwise_and(clean, mask)
