@@ -56,5 +56,5 @@ if __name__ == "__main__":
     warped_board, cells = preprocess_image("test_images/image2.png")
     grid = recognize_digits(cells)
 
-    print("✅ detected sudoku grid:")
+    print("detected sudoku grid:")
     print(grid)
