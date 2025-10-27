@@ -62,9 +62,7 @@ def print_grid(grid):
         print()
 
 
-# ✅ Test Run
 if __name__ == "__main__":
-    # Example Sudoku puzzle (0 = blank)
     sample_grid = np.array([
         [5, 3, 0, 0, 7, 0, 0, 0, 0],
         [6, 0, 0, 1, 9, 5, 0, 0, 0],
