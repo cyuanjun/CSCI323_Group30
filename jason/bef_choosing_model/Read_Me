@@ -3,6 +3,12 @@ These files that I complete before adding model to recognize digits
 u guys can try with this code before applying models
 from #### 3. Find the biggest contour the most below part of proj_sudokuMain.py
 
+myModel.h5 is what I get from someone's github, I tried with some sudoku images but it is inaccurate. 
+
+We shld try to find other model which can recognize btr
+
+oso we need to come up with efficient algorithm to solve the sudoku btr to showing which method is efficient on the report
+
 Python verision : 3.8
 opencv-python : 4.12.0.88
 tensorflow : 2.13.0
