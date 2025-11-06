@@ -1,2 +1,8 @@
 These files that I complete before adding model to recognize digits
 
+u guys can try with this code before applying models
+
+Python verision : 3.8
+opencv-python : 4.12.0.88
+tensorflow : 2.13.0
+numpy : 1.24.3
