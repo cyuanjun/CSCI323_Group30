@@ -5,7 +5,7 @@ import numpy as np
 
 
 # ---------- Configuration ----------
-img_path = "Images/image5.png"
+img_path = "Images/test1.png"
 img_height, img_width = 450, 450
 
 
@@ -476,5 +476,6 @@ cv2.imshow("Recognized Sudoku (Printed Digits CNN)", vis)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 # ====================================================================================
+
 
 
