@@ -30,10 +30,11 @@ def preprocess_image(image_path):
         add = pts.sum(1)
         diff = np.diff(pts, axis=1)
 
-        new_pts[0] = pts[np.argmin(add)]     # top-left
-        new_pts[1] = pts[np.argmin(diff)]    # top-right
-        new_pts[2] = pts[np.argmax(diff)]    # bottom-left
-        new_pts[3] = pts[np.argmax(add)]     # bottom-right
+        new_pts[0] = pts[np.argmin(add)]  # top-left
+        new_pts[1] = pts[np.argmin(diff)] # top-right
+        new_pts[2] = pts[np.argmax(diff)] # bottom-left
+        new_pts[3] = pts[np.argmax(add)]  # bottom-right
+
         return new_pts
 
     pts1 = reorder_points(board_contour)
@@ -42,6 +43,9 @@ def preprocess_image(image_path):
 
     matrix = cv2.getPerspectiveTransform(pts1, pts2)
     warped = cv2.warpPerspective(original, matrix, (side, side))
+    # Remove 
+    # warped = warped[5:-5, 5:-5]
+
 
     cells = []
     cell_size = side // 9

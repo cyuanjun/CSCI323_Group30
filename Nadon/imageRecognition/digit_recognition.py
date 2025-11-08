@@ -16,6 +16,13 @@ def extract_digit(cell_img):
     thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
                                    cv2.THRESH_BINARY_INV, 11, 2)
     
+    if cv2.countNonZero(thresh) < 40:
+        return 0
+    
+    confidence_threshold = 0.5 if digit in [1,7] else 0.7
+    if confidence > confidence_threshold:
+            return digit
+
     # Remove noise
     kernel = np.ones((2, 2), np.uint8)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
