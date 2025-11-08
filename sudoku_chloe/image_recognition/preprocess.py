@@ -87,4 +87,3 @@ if __name__ == "__main__":
     warped_board, cells = preprocess_image("test_images/image1.png")
     print(f"✅ Board detected successfully! Grid size: {len(cells)}x{len(cells[0])}")
     visualize_cells(warped_board)
-
