@@ -1,4 +1,3 @@
-
 import cv2
 import numpy as np
 from image_recognition.preprocess import preprocess_image
