@@ -1,0 +1,23 @@
+# main.py
+import sudoku_solver as bt           
+import sudoku_solver_with_logics as lg      
+
+from sudoku_metrics import benchmark_solver
+
+def load_board():
+    with open("Hard.txt") as f:
+        return [list(map(int, line.split())) for line in f]
+
+
+res_bt = benchmark_solver(bt.sudoku_solve, load_board, bt.reset_stats, bt.get_stats)
+
+
+res_lg = benchmark_solver(lg.sudoku_solve, load_board, lg.reset_stats, lg.get_stats)
+
+print("=== Benchmark Results: Backtracking ===")
+for k, v in res_bt.items():
+    print(f"{k:20s}: {v}")
+
+print("\n=== Benchmark Results: Logic Backtracking ===")
+for k, v in res_lg.items():
+    print(f"{k:20s}: {v}")
