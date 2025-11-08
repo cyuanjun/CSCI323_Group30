@@ -1,42 +1,82 @@
 import cv2
 import numpy as np
-import pytesseract
+import os
+from tensorflow.keras.models import load_model
+
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "digit_model_sudoku.h5")
+MODEL_PATH = os.path.abspath(MODEL_PATH)
+
+print("📌 Loading model from:", MODEL_PATH) 
+model = load_model(MODEL_PATH)
+
+def normalize_digit(img):
+    contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        return None
+    x,y,w,h = cv2.boundingRect(max(contours, key=cv2.contourArea))
+    digit = img[y:y+h, x:x+w]
+
+    digit = cv2.resize(digit, (20, 20))
+
+    padded = np.zeros((28, 28), dtype=np.uint8)
+    padded[4:24, 4:24] = digit
+
+    return padded
+
 
 def extract_digit(cell_img):
-
     gray = cv2.cvtColor(cell_img, cv2.COLOR_BGR2GRAY)
-
     blur = cv2.GaussianBlur(gray, (3, 3), 0)
 
     thresh = cv2.adaptiveThreshold(
         blur, 255,
-        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.ADAPTIVE_THRESH_MEAN_C,
         cv2.THRESH_BINARY_INV,
-        11, 2
+        17, 5
     )
 
-    kernel = np.ones((2, 2), np.uint8)
-    clean = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
-    contours, _ = cv2.findContours(clean, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    mask = np.zeros_like(clean)
+    thresh = cv2.dilate(thresh, np.ones((2,2), np.uint8), iterations=1)
 
-    if contours:
-        largest_contour = max(contours, key=cv2.contourArea)
-        if cv2.contourArea(largest_contour) > 30:  
-            cv2.drawContours(mask, [largest_contour], -1, 255, -1)
+    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, np.ones((2,2), np.uint8))
 
-    digit_only = cv2.bitwise_and(clean, mask)
+    h, w = thresh.shape
+    thresh = thresh[int(h*0.15):int(h*0.85), int(w*0.15):int(w*0.85)]
 
-    white_ratio = np.sum(digit_only > 0) / (digit_only.shape[0] * digit_only.shape[1])
-    if white_ratio < 0.02:
+    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
         return 0
 
-    config = '--psm 10 --oem 3 -c tessedit_char_whitelist=123456789'
-    text = pytesseract.image_to_string(digit_only, config=config).strip()
+    contours = [c for c in contours if cv2.contourArea(c) > 40]
+    if not contours:
+        return 0
 
-    if text.isdigit():
-        return int(text)
-    return 0
+    x,y,w,h = cv2.boundingRect(max(contours, key=cv2.contourArea))
+    digit = thresh[y:y+h, x:x+w]
+
+    digit = normalize_digit(digit)
+    if digit is None:
+        return 0
+
+    digit = digit.astype("float32") / 255.0
+    digit = digit.reshape(1, 28, 28, 1)
+
+    pred = model.predict(digit, verbose=0)
+    num = np.argmax(pred)      
+    conf = np.max(pred)        
+
+
+    if conf < 0.50:
+        return 0
+
+    if num == 2 and conf < 0.75:  
+        h, w = thresh.shape
+        vertical_strength = np.sum(thresh[:, w//2-1:w//2+1] > 0) / (h * 2)
+
+        if vertical_strength > 0.15:
+            return 1
+
+    return num + 1 
+
 
 
 def recognize_digits(cells):
@@ -48,13 +88,3 @@ def recognize_digits(cells):
             sudoku_grid[y, x] = digit
 
     return sudoku_grid
-
-
-if __name__ == "__main__":
-    from image_recognition.preprocess import preprocess_image
-
-    warped_board, cells = preprocess_image("test_images/image2.png")
-    grid = recognize_digits(cells)
-
-    print("detected sudoku grid:")
-    print(grid)
