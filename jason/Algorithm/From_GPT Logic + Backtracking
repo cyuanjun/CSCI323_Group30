@@ -1,0 +1,138 @@
+from typing import List, Set, Tuple, Optional
+
+Board = List[List[int]]
+
+_stats = {"calls": 0, "backtracks": 0}
+
+def reset_stats():
+    _stats["calls"] = 0
+    _stats["backtracks"] = 0
+
+def get_stats():
+    return {"calls": _stats["calls"], "backtracks": _stats["backtracks"]}
+
+_rows = range(9)
+_cols = range(9)
+_peers = {}
+for r in _rows:
+    for c in _cols:
+        pr = {(r, x) for x in _cols if x != c}
+        pc = {(x, c) for x in _rows if x != r}
+        br, bc = (r // 3) * 3, (c // 3) * 3
+        pb = {(rr, cc) for rr in range(br, br + 3)
+                       for cc in range(bc, bc + 3)
+                       if not (rr == r and cc == c)}
+        _peers[(r, c)] = pr | pc | pb
+
+_digits: Set[int] = set(range(1, 10))
+
+def _init_candidates(board: Board) -> List[List[Set[int]]]:
+    cand: List[List[Set[int]]] = [[set(_digits) for _ in _cols] for _ in _rows]
+    for r in _rows:
+        for c in _cols:
+            v = board[r][c]
+            if v != 0:
+                cand[r][c] = {v}
+    return cand
+
+def _propagate_all(board: Board, cand: List[List[Set[int]]]) -> bool:
+    queue = [(r, c) for r in _rows for c in _cols if len(cand[r][c]) == 1]
+    seen = set()
+    while queue:
+        r, c = queue.pop()
+        if (r, c) in seen:
+            continue
+        seen.add((r, c))
+
+        v = next(iter(cand[r][c]))
+        if board[r][c] == 0:
+            board[r][c] = v
+        else:
+            if board[r][c] != v:
+                return False
+
+        for rr, cc in _peers[(r, c)]:
+            if board[rr][cc] == 0 and v in cand[rr][cc]:
+                cand[rr][cc] = set(cand[rr][cc])
+                cand[rr][cc].discard(v)
+                if len(cand[rr][cc]) == 0:
+                    return False
+                if len(cand[rr][cc]) == 1:
+                    queue.append((rr, cc))
+
+    return True
+
+def _apply_givens(board: Board, cand: List[List[Set[int]]]) -> bool:
+    for r in _rows:
+        for c in _cols:
+            v = board[r][c]
+            if v != 0:
+                cand[r][c] = {v}
+    return _propagate_all(board, cand)
+
+def _select_cell_mrv(board: Board, cand: List[List[Set[int]]]) -> Optional[Tuple[int, int]]:
+    best = None
+    best_len = 10
+    for r in _rows:
+        for c in _cols:
+            if board[r][c] == 0:
+                L = len(cand[r][c])
+                if L < best_len:
+                    best_len = L
+                    best = (r, c)
+                    if L == 1:
+                        return best
+    return best
+
+def _order_values_lcv(board: Board, cand: List[List[Set[int]]], r: int, c: int) -> list:
+    impacts = []
+    for v in cand[r][c]:
+        impact = 0
+        for rr, cc in _peers[(r, c)]:
+            if board[rr][cc] == 0 and v in cand[rr][cc]:
+                impact += 1
+        impacts.append((impact, v))
+    impacts.sort()
+    return [v for _, v in impacts]
+
+def _snapshot(board: Board, cand: List[List[Set[int]]]):
+    return [row[:] for row in board], [[s.copy() for s in row] for row in cand]
+
+def _restore(board: Board, cand: List[List[Set[int]]], bk_board, bk_cand):
+    for r in _rows:
+        board[r] = bk_board[r][:]
+        for c in _cols:
+            cand[r][c] = bk_cand[r][c].copy()
+
+def sudoku_solve(board: Board) -> bool:
+    cand = _init_candidates(board)
+    if not _apply_givens(board, cand):
+        return False
+
+    def dfs() -> bool:
+        _stats["calls"] += 1
+
+        cell = _select_cell_mrv(board, cand)
+        if cell is None:
+            return True
+
+        r, c = cell
+        if len(cand[r][c]) == 0:
+            return False
+
+        for v in _order_values_lcv(board, cand, r, c):
+            bk_board, bk_cand = _snapshot(board, cand)
+
+            board[r][c] = v
+            cand[r][c] = {v}
+
+            ok = _propagate_all(board, cand)
+            if ok and dfs():
+                return True
+
+            _stats["backtracks"] += 1
+            _restore(board, cand, bk_board, bk_cand)
+
+        return False
+
+    return dfs()
