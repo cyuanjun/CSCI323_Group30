@@ -15,9 +15,9 @@ This pipeline demonstrates how image recognition and search algorithms can work 
 # Getting Started
 Built using Python, Numpy, OpenCV, Tensorflow, and Matplotlib.
 
-Environment: Python virtual environment
+**Environment:** Python virtual environment
 
-Algorithm applied: Basic Backtracking, Minimum Remaining Value, Foward Checking, Degree Hueristic, and Least Constraining Value.    
+**Algorithm applied:** Basic Backtracking, Minimum Remaining Value, Foward Checking, Degree Hueristic, and Least Constraining Value.    
 
 ## Clone the Repository
 ```bash
@@ -35,11 +35,54 @@ source venv/bin/activate
 ```
 
 ## Install Dependencies
-(change later, can also include package installer script)
 ```bash
 pip install numpy opencv-python tensorflow matplotlib
 ```
 
-# Files
+# Running the Sudoku Solver
+1. Run main.py:
+   ```bash
+   python FINAL_SUBMISSION/main.py
+   ```
+2. Input Sudoku image path:
+   ```bash
+   Enter path of sudoku image to be solved or (N) to end:
+   # enter your image path e.g Images/img1.png
+   ```
+3. After the outputs for each stage (image preprocessing and Sudoku solving) are displayed, press any key to proceed to the next step.
 
+## Files
+### Image Recognition
+- FINAL_image_processing.py
+- FINAL_digit_recognition.py
+  
+### Solving
+- DegMRVFV_sudoku_solver.py
+- IcvDegMrvFc_sudoku_solver.py
+- MRV_sudoku_solver.py
+- MRVFC_sudoku_solver.py
+- sudoku_metrics.py
+- sudoku_solver.py
+  
+### Main
+- main.py
 
+### Models
+- printed_digits_cnn.keras
+  
+# Dataset
+Dataset and web sources we used for the development of our model.
+- [Kaggle: Printed Digits Dataset](https://www.kaggle.com/datasets/kshitijdhama/printed-digits-dataset/versions/56)
+- [Testing Images 1](https://www.sudokuweb.org/)
+- [Testing Images 2](https://www.websudoku.com/)
+
+# Authors
+**Group name:** FT30
+
+**Project number:** 13
+
+**Members:**
+- Lee Haeeun
+- Chia Yuan Jun
+- Lee Jinseo
+- Nadon Panwong
