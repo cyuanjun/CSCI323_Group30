@@ -1,3 +1,4 @@
+![Group Project Logo](group_project_logo.png)
 # FT30 Automatic Sudoku Solver 
 This project focuses on developing an automated Sudoku solver that integrates image recognition with algorithmic reasoning. The system takes an image of an unsolved Sudoku puzzle, processes it to detect and recognize digits, and applies a backtracking algorithm to generate a valid completed grid.
 
