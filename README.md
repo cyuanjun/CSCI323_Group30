@@ -22,7 +22,8 @@ This pipeline demonstrates how image recognition and search algorithms can work 
 - Tensorflow
 - Matplotlib.
 
-**Environment:** Python virtual environment
+**Environment:**
+- Python virtual environment
 
 **Algorithm applied:**
 - Basic Backtracking
