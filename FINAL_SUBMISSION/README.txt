@@ -10,8 +10,6 @@ Constants:
 - FINAL_digit_recognition, line 17: DATASET_DIR = <directory of dataset for training>
 - FINAL_digit_recognition, line 18: MODEL_PATH = <path to model>
 
-
-
 Files (Image Recognition):
 - FINAL_image_processing.py
 - FINAL_digit_recognition.py
@@ -32,3 +30,4 @@ Models:
 
 Dataset used:
 - https://www.kaggle.com/datasets/kshitijdhama/printed-digits-dataset/versions/56
+- Remove the extra folder "10" in assets before training
