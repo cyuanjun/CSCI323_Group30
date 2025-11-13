@@ -14,11 +14,22 @@ The project aims to create an end-to-end AI system capable of:
 This pipeline demonstrates how image recognition and search algorithms can work together to solve structured reasoning tasks.
 
 # Getting Started
-Built using Python, Numpy, OpenCV, Tensorflow, and Matplotlib.
+**Built using:**
+- Python
+**Packages used:**
+- Numpy
+- OpenCV
+- Tensorflow
+- Matplotlib.
 
 **Environment:** Python virtual environment
 
-**Algorithm applied:** Basic Backtracking, Minimum Remaining Value, Foward Checking, Degree Hueristic, and Least Constraining Value.    
+**Algorithm applied:**
+- Basic Backtracking
+- Minimum Remaining Value
+- Foward Checking
+- Degree Hueristic
+- Least Constraining Value.    
 
 ## Clone the Repository
 ```bash
