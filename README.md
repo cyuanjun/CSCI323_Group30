@@ -16,6 +16,7 @@ This pipeline demonstrates how image recognition and search algorithms can work 
 # Getting Started
 **Built using:**
 - Python
+
 **Packages used:**
 - Numpy
 - OpenCV
