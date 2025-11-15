@@ -43,9 +43,9 @@ cd CSCI323_Group30
 ```bash
 python -m venv .venv
 # For Windows
-venv\Scripts\activate
+.\.venv\Scripts\activate
 # For Mac/Linux
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 ## Install Dependencies
