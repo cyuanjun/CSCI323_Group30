@@ -3,7 +3,7 @@
 This project focuses on developing an automated Sudoku solver that integrates image recognition with algorithmic reasoning. The system takes an image of an unsolved Sudoku puzzle, processes it to detect and recognize digits, and applies a backtracking algorithm to generate a valid completed grid.
 
 [Presentation Slides](https://docs.google.com/presentation/d/1hCGh7zgCO9fUspghddKswMbwv7Oy44Nz9_8gRTmTEZE/edit?slide=id.g3a1b57e9357_4_2#slide=id.g3a1b57e9357_4_2)
-[Presentation Video]
+&emsp;[Presentation Video](https://www.youtube.com/watch?v=Mj550KaI3u0&t=183s)
 
 # Objective
 The project aims to create an end-to-end AI system capable of:
